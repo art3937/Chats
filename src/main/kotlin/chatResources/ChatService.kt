@@ -31,8 +31,8 @@ object ChatService {
     fun getChatMessageCount(idCompanion: Int, countMessages: Int): List<Message> {
         val messages: List<Message> =
             (chatsList[idCompanion] ?: throw NotFoundException("нет такого ид")).messageList.take(countMessages)
-                .filter { it.active }
-        chatsList[idCompanion]?.messageList?.take(countMessages)?.forEach { it.read = true }
+                .filter { it.active }.onEach {  it.read = true }
+       // chatsList[idCompanion]?.messageList?.take(countMessages)?.forEach { it.read = true }
         return messages.ifEmpty { throw NotFoundException("сообщений нет") }
     }
 

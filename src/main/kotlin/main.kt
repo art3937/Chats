@@ -7,7 +7,7 @@ fun main() {
     ChatService.addMessage(2, Message("hello2"))
     ChatService.addMessage(3, Message("help"))
     println(ChatService.deleteMessage(4))
-    println(ChatService.getChatMessageCount(1, 2))
+    println(ChatService.getChatMessageCount(1, 1))
 //  println(ChatService.getChatMessage(2))
 // println(ChatService.lastMessage())
 //  println(ChatService.getUnreadChatsCount())
