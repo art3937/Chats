@@ -6,6 +6,7 @@ import org.junit.Before
 import org.junit.Test
 import java.io.ByteArrayOutputStream
 import java.io.PrintStream
+import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class ChatServiceTest {
@@ -46,9 +47,10 @@ val count = ChatService.getUnreadChatsCount()
     }
 
     @Test
-    fun getChatMessage() {
+    fun getChatMessageCount() {
         ChatService.addMessage(4, Message("hello"))
-        val messages = ChatService.getChatMessage(4)
+        //ChatService.deleteMessage(1)
+        val messages = ChatService.getChatMessageCount(4,1)
         assertTrue { messages.isNotEmpty() }
     }
 
@@ -61,13 +63,13 @@ val count = ChatService.getUnreadChatsCount()
     @Test
     fun deleteChat() {
         ChatService.addMessage(4, Message("hello"))
-        assertTrue { ChatService.deleteChat(4) }
+        assertNotNull ( ChatService.deleteChat(4) )
     }
 
     @Test(expected = NotFoundException::class)
     fun shouldThrow() {
         ChatService.addMessage(4, Message("hello"))
-        ChatService.getChatMessage(3)
+        ChatService.getChatMessageCount(3,2)
     }
 
     @After

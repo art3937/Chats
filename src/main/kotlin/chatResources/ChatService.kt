@@ -7,7 +7,7 @@ object ChatService {
     private var messages = mutableMapOf<String, String>()
     private var count = 1
 
-    fun getUnreadChatsCount() = chatsList.count { it -> it.value.messageList.any { !it.read  } }
+    fun getUnreadChatsCount() = chatsList.count { it -> it.value.messageList.any { !it.read } }
 
     fun addMessage(idCompanion: Int, message: Message) {
         chatsList.getOrPut(idCompanion) { Chat() }.messageList.plusAssign(message.copy(idMessage = count++))
@@ -19,7 +19,8 @@ object ChatService {
     fun lastMessage(): MutableMap<String, String> {
         chatsList.forEach { it ->
             if (it.value.messageList.any() { it.active }) {
-                messages["пользователь ${it.key} "] = " сообщения ${it.value.messageList.last() { it.active }.messageText}"
+                messages["пользователь ${it.key} "] =
+                    " сообщения ${it.value.messageList.last() { it.active }.messageText}"
             } else {
                 messages["пользователь ${it.key} "] = " Нет Сообщений"
             }
@@ -27,17 +28,12 @@ object ChatService {
         return messages
     }
 
-    fun getChatMessage(idCompanion: Int): MutableList<Message> {
-        var messages: MutableList<Message>? = null
-        chatsList.forEach { it ->
-            if (it.key == idCompanion) {
-                it.value.messageList.forEach {
-                    it.read = true
-                    messages = chatsList.getValue(idCompanion).messageList
-                }
-            }
-        }
-        return messages ?: throw NotFoundException("Нет сообщений")
+    fun getChatMessageCount(idCompanion: Int, countMessages: Int): List<Message> {
+        val messages: List<Message> =
+            (chatsList[idCompanion] ?: throw NotFoundException("нет такого ид")).messageList.take(countMessages)
+                .filter { it.active }
+        chatsList[idCompanion]?.messageList?.take(countMessages)?.forEach { it.read = true }
+        return messages.ifEmpty { throw NotFoundException("сообщений нет") }
     }
 
     fun deleteMessage(idMessage: Int): Boolean {
@@ -53,16 +49,7 @@ object ChatService {
         return resultDelete
     }
 
-    fun deleteChat(idCompanion: Int): Boolean {
-        var resultDelete = false
-        chatsList.forEach {
-            if (it.key == idCompanion) {
-                chatsList.remove(idCompanion)
-                resultDelete = true
-            }
-        }
-        return resultDelete
-    }
+    fun deleteChat(idCompanion: Int) = chatsList.remove(idCompanion) ?: throw NotFoundException("нет такого чата")
 
     fun clear() {
         chatsList = mutableMapOf()
