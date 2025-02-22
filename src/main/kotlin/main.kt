@@ -8,11 +8,11 @@ fun main() {
     ChatService.addMessage(3, Message("help"))
     println(ChatService.deleteMessage(4))
     println(ChatService.getChatMessageCount(1, 1))
-//  println(ChatService.getChatMessage(2))
-// println(ChatService.lastMessage())
-//  println(ChatService.getUnreadChatsCount())
-//  println(ChatService.deleteChat(1))
-   ChatService.getChats()
+    println(ChatService.getChatMessageCount(2, 1))
+    println(ChatService.lastMessage())
+    println(ChatService.getUnreadChatsCount())
+    println(ChatService.deleteChat(1))
+    ChatService.getChats()
 }
 
 
