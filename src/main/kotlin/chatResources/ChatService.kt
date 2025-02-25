@@ -56,5 +56,12 @@ object ChatService {
         chatsList = mutableMapOf()
         count = 1
         messages = mutableMapOf()
+        val pair = Pair(1,1)
     }
+
+    fun getUnreadMessage() = chatsList.values.fold(mutableListOf<Message>()){ acc, chat -> (acc + chat.messageList.filter { !it.read && it.active }).toMutableList() }
+}
+
+class Pair <A, B>(val a: A, val b: B){
+
 }
